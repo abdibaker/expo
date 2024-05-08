@@ -406,7 +406,7 @@ function appendNotFoundRoute(directory) {
 function getLayoutNode(node, options) {
     /**
      * A file called `(a,b)/(c)/_layout.tsx` will generate two _layout routes: `(a)/(c)/_layout` and `(b)/(c)/_layout`.
-     * Each of these layouts will have a different initialRouteName based upon the first group name.
+     * Each of these layouts will have a different anchor based upon the first group name.
      *
      * So
      */
@@ -441,7 +441,7 @@ function crawlAndAppendInitialRoutesAndEntryFiles(node, options, entryPoints = [
          * Calculate the initialRouteNode
          *
          * A file called `(a,b)/(c)/_layout.tsx` will generate two _layout routes: `(a)/(c)/_layout` and `(b)/(c)/_layout`.
-         * Each of these layouts will have a different initialRouteName based upon the first group.
+         * Each of these layouts will have a different anchor based upon the first group.
          */
         const groupName = (0, matchers_1.matchGroupName)(node.route);
         const childMatchingGroup = node.children.find((child) => {
@@ -463,10 +463,10 @@ function crawlAndAppendInitialRoutesAndEntryFiles(node, options, entryPoints = [
                     .map((child) => `'${child.route}'`)
                     .join(', ');
                 if (groupName) {
-                    throw new Error(`Layout ${node.contextKey} has invalid initialRouteName '${anchor}' for group '(${groupName})'. Valid options are: ${validInitialRoutes}`);
+                    throw new Error(`Layout ${node.contextKey} has invalid anchor '${anchor}' for group '(${groupName})'. Valid options are: ${validInitialRoutes}`);
                 }
                 else {
-                    throw new Error(`Layout ${node.contextKey} has invalid initialRouteName '${anchor}'. Valid options are: ${validInitialRoutes}`);
+                    throw new Error(`Layout ${node.contextKey} has invalid anchor '${anchor}'. Valid options are: ${validInitialRoutes}`);
                 }
             }
             // Navigators can add initialsRoutes into the history, so they need to be to be included in the entryPoints
