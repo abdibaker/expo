@@ -125,7 +125,7 @@ asChild, rel, target, download, initial: isStackInitialScreen, ...rest }, ref) {
     const props = (0, useLinkToPathProps_1.default)({
         href: resolvedHref,
         event,
-        options: { initialScreen: isStackInitialScreen },
+        options: { unstable_ignoreAnchor: isStackInitialScreen },
     });
     const onPress = (e) => {
         if ('onPress' in rest) {

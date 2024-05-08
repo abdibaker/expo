@@ -92,7 +92,7 @@ function setParams(params = {}) {
     return (this.navigationRef?.current?.setParams)(params);
 }
 exports.setParams = setParams;
-function linkTo(href, event, { initialScreen } = {}) {
+function linkTo(href, event, { unstable_ignoreAnchor: ignoreAnchor } = {}) {
     if ((0, url_1.shouldLinkExternally)(href)) {
         Linking.openURL(href);
         return;
@@ -143,10 +143,10 @@ function linkTo(href, event, { initialScreen } = {}) {
         console.error('Could not generate a valid navigation state for the given path: ' + href);
         return;
     }
-    return navigationRef.dispatch(getNavigateAction(state, rootState, event, initialScreen));
+    return navigationRef.dispatch(getNavigateAction(state, rootState, event, ignoreAnchor));
 }
 exports.linkTo = linkTo;
-function getNavigateAction(actionState, navigationState, type = 'NAVIGATE', initialScreen = true) {
+function getNavigateAction(actionState, navigationState, type = 'NAVIGATE', ignoreAnchor = false) {
     /**
      * We need to find the deepest navigator where the action and current state diverge, If they do not diverge, the
      * lowest navigator is the target.
@@ -193,9 +193,11 @@ function getNavigateAction(actionState, navigationState, type = 'NAVIGATE', init
         payload.screen = actionStateRoute.name;
         // Merge the params, ensuring that we create a new object
         payload.params = { ...params };
-        if (!initialScreen) {
-            // Normally, the new screen will replace the initial screen, but we want to keep the initial screen
-            // then we need to set the initial flag to false
+        if (!ignoreAnchor) {
+            // React Navigation default behavior is to set the set screen as the initial screen
+            // The layouts initial screen is only applied during deep linking
+            // Expo Router reverses this behavior. The initial screen is was applied, and
+            // you must opt-out of this behavior by setting `ignoreAnchor` to true
             payload.initial = false;
         }
         // Params don't include the screen, thats a separate attribute
